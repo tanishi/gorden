@@ -31,6 +31,10 @@ func (c *CLI) Run(args []string) int {
 		return ExitCodeParseFlagError
 	}
 
+	if args[1] != "-userID" {
+		userID = args[1]
+	}
+
 	if userID == "" {
 		userID = os.Getenv("GIT_COMMITTER_NAME")
 	}
