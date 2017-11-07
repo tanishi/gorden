@@ -7,7 +7,7 @@ A CLI tool for get github contributions
 `gorden` A CLI tool for get github contributions.
 It is get contributions specify by user id.
 
-## Reauirement
+## Requirements
 
 Go
 
