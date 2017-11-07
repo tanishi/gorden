@@ -15,6 +15,10 @@ const (
 	ExitCodeParseFlagError
 )
 
+const (
+	envUserID = "GIT_COMMITTER_NAME"
+)
+
 type CLI struct {
 	outStream io.Writer
 	errStream io.Writer
@@ -25,7 +29,7 @@ func (c *CLI) Run(args []string) int {
 
 	flags := flag.NewFlagSet("gorden", flag.ContinueOnError)
 	flags.SetOutput(c.errStream)
-	flags.StringVar(&userID, "userID", "", "github account")
+	flags.StringVar(&userID, "userID", getEnvString(envUserID, ""), "github account")
 
 	if err := flags.Parse(args[1:]); err != nil {
 		return ExitCodeParseFlagError
@@ -33,10 +37,6 @@ func (c *CLI) Run(args []string) int {
 
 	if args[1] != "-userID" {
 		userID = args[1]
-	}
-
-	if userID == "" {
-		userID = os.Getenv("GIT_COMMITTER_NAME")
 	}
 
 	if userID == "" {
@@ -76,4 +76,14 @@ func GetContributions(url string) (int, int) {
 	})
 
 	return contributions, sum
+}
+
+func getEnvString(env, def string) string {
+	r := os.Getenv(env)
+
+	if r == "" {
+		return def
+	}
+
+	return r
 }
